@@ -1,0 +1,18 @@
+#!/bin/bash
+cd /var/lib/jenkins
+ls -a | grep -w .git
+if [ $? -ne 0 ];then
+git init
+fi
+
+touch .gitignore
+echo workspace >> .gitignore
+git add *
+git commit -m "jenkins backup on 'data'"
+git push [ https://github.com/Basusahukar/jenkins_backup.git ]
+if [ $? -eq 0 ];then
+body=
+echo $body | mail -s "jenkins backup success" -c shashanksahukar@gmail.com
+else
+echo $body | mail -s "jenkins backup failed" -c shashanksahukar@gmail.com
+fi
